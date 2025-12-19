@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tweakio-whatsapp"
+name = "tweakio-SDK"
 version = "0.1.0"
-description = "A powerful WhatsApp automation SDK using Playwright and Camoufox"
+description = "A powerful Multi-Platform automation SDK using Playwright and Camoufox. Currently supporting for whatsapp"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-  {name = "Rohit"}  # Matches author in directory.py
+  {name = "Rohit"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
