@@ -103,7 +103,7 @@ async def AddMedia(page: Page, file: str, mediatype: str = "doc") -> None:
             logger.error(f"❌ Attach option for '{mediatype}' not visible.", exc_info=True)
             return
 
-        with page.expect_file_chooser() as fc:
+        with await  page.expect_file_chooser() as fc:
             await target.click(timeout=2000)
         chooser: FileChooser = fc.value
 
