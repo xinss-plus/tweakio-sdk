@@ -8,6 +8,7 @@ from typing import Optional
 from playwright.async_api import Page
 
 from src.Interfaces.Message_Interface import message_interface
+from src.Interfaces.Web_UI_Selector import WebUISelectorCapable
 
 
 class MediaType(str, Enum):
@@ -32,12 +33,13 @@ class MediaCapableInterface(ABC):
     """Media Capable Interface"""
 
     @abstractmethod
-    def __init__(self, page: Page, log : logging.Logger) -> None:
+    def __init__(self, page: Page, log: logging.Logger, UIConfig: WebUISelectorCapable, **kwargs) -> None:
         self.page = page
         self.log = log
+        self.UIConfig = UIConfig
 
     @abstractmethod
-    async def add_media(self, mtype: MediaType, Message: message_interface, file: FileTyped) -> bool:
+    async def add_media(self, mtype: MediaType, Message: message_interface, file: FileTyped, **kwargs) -> bool:
         """
         Attach Media given with the Type to attach to the message.
         Returns True if the media was successfully added else False.

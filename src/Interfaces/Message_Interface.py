@@ -19,6 +19,6 @@ class message_interface(ABC):
     MessageID: Optional[str]
 
     @abstractmethod
-    def _message_key(self) -> str:
+    def _message_key(self, **kwargs) -> str:
         """Returns the Hashed UI"""
         pass

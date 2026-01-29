@@ -11,7 +11,7 @@ from playwright.async_api import Page, Locator, Position
 from Humanized_Opeartions import Humanized_Operation
 from src.Interfaces.Reply_Capabale_Interface import ReplyCapableInterface
 from src.WhatsApp.DefinedClasses.Message import whatsapp_message
-import selector_config as sc
+import WebUISelector as sc
 class Reply(ReplyCapableInterface):
     def __init__(self, page: Page, log : logging.Logger):
         super().__init__(page=page, log=log)

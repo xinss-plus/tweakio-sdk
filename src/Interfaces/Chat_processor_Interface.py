@@ -14,23 +14,25 @@ from typing import Dict, List, Optional
 from playwright.async_api import Page
 
 from src.Interfaces.Chat_Interface import chat_interface
+from src.WhatsApp.WebUISelector import WebSelectorConfig
 
 
 class chat_processor_interface(ABC):
     """Chat Loader Interface"""
     capabilities: Dict[str, bool]
 
-    def __init__(self, log: logging.Logger, page : Page):
+    def __init__(self, log: logging.Logger, page : Page, UIConfig : WebSelectorConfig, **kwargs) -> None:
         self.log = log
         self.page = page
+        self.UIConfig = UIConfig
 
     @abstractmethod
-    async def fetch_chats(self) -> List[chat_interface]:
+    async def fetch_chats(self, **kwargs) -> List[chat_interface]:
         """Fetch and return limited chat objects"""
         pass
 
     @abstractmethod
-    async def _click_chat(self, chat: Optional[chat_interface]) -> bool:
+    async def _click_chat(self, chat: Optional[chat_interface], **kwargs) -> bool:
         """Click chat object"""
         pass
 

@@ -19,6 +19,6 @@ class chat_interface(ABC):
     System_Hit_Time: float
 
     @abstractmethod
-    def _chat_key(self) -> str:
+    def _chat_key(self, **kwargs) -> str:
         """Returns the Hashed UI"""
         pass

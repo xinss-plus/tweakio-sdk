@@ -9,21 +9,22 @@ import pyperclip
 from playwright.async_api import Page, ElementHandle, Locator
 
 from src.Interfaces.Humanize_Operation_Interface import humanize_operation
+from src.Interfaces.Web_UI_Selector import WebUISelectorCapable
 
 
 class Humanized_Operation(humanize_operation):
     """WhatsApp  Customized Humanized Operation"""
 
-    def __init__(self, page: Page, log: logging.Logger):
-        super().__init__(page=page, log=log)
+    def __init__(self, page: Page, log: logging.Logger, UIConfig : WebUISelectorCapable):
+        super().__init__(page=page, log=log, UIConfig=UIConfig)
 
     async def typing(self, text: str, **kwargs) -> bool:
         source: Optional[Union[ElementHandle, Locator]] = kwargs.get("source") or None
-
         if not source:
             raise Exception("Wrong Method Assigned , need clickable_source in wa/ humanize / typing")
 
         try:
+
             await source.click(timeout=3000)  # 3 sec for Humanized Typing handling by camoufox
 
             # Clear previous text
@@ -53,12 +54,17 @@ class Humanized_Operation(humanize_operation):
             return True
         except Exception as e:
             self.log.warning(f" WA / Humanized_Operation / typing , Failed Typing : {e}", exc_info=True)
-            try:
-                await source.fill(text)
-                await self.page.keyboard.press("Enter")
-                return True
-            except Exception as e:
-                self.log.error(f" WA / Humanized_Operation / typing , Failed the direct fill .: {e}", exc_info=True)
-                await self.page.keyboard.press("Escape", delay=0.5)
-                await self.page.keyboard.press("Escape", delay=0.5)
-            return False
+            return await self._Instant_fill(text=text, source=source)
+
+    async def _Instant_fill(self, text: str, source: Optional[Union[ElementHandle, Locator]]) -> bool:
+        if not source :
+            raise Exception("WA / Humanized_Operation / __instant_fill, need clickable_source")
+        try:
+            await source.fill(text)
+            await self.page.keyboard.press("Enter")
+            return True
+        except Exception as e:
+            self.log.error(f" WA / Humanized_Operation / typing , Failed the direct fill .: {e}", exc_info=True)
+            await self.page.keyboard.press("Escape", delay=0.5)
+            await self.page.keyboard.press("Escape", delay=0.5)
+        return False

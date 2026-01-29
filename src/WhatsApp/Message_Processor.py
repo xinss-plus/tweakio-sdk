@@ -12,13 +12,12 @@ from playwright.async_api import Page
 
 from sql_lite_storage import SQL_Lite_Storage
 from src.Decorators.Chat_Click_decorator import ensure_chat_clicked
-from src.Exceptions import MessageNotFoundError
 from src.Interfaces.Message_Processor_Interface import message_processor_interface
 from src.MessageFilter import Filter
-from src.WhatsApp import selector_config as sc
 from src.WhatsApp.Chat_Processor import chat_processor
 from src.WhatsApp.DefinedClasses.Chat import whatsapp_chat
 from src.WhatsApp.DefinedClasses.Message import whatsapp_message
+from src.WhatsApp.WebUISelector import WebSelectorConfig
 
 
 class MessageProcessor(message_processor_interface):
@@ -30,12 +29,14 @@ class MessageProcessor(message_processor_interface):
             chat_processor: chat_processor,
             page: Page,
             log: logging.Logger,
+            UIConfig: WebSelectorConfig
     ) -> None:
         super().__init__(
             storage_obj=storage_obj,
             filter_obj=filter_obj,
             log=log,
-            page=page)
+            page=page,
+            UIConfig=UIConfig)
         self.chat_processor = chat_processor
 
     @staticmethod
@@ -50,15 +51,20 @@ class MessageProcessor(message_processor_interface):
         return [msg for msg in msgList if msg.Direction == "out"]
 
     @ensure_chat_clicked(lambda self, chat: self.chat_processor._click_chat(chat))
-    async def _get_wrapped_Messages(self, chat: whatsapp_chat, retry: int = 3, *args, **kwargs) -> List[
-        whatsapp_message]:
+    async def _get_wrapped_Messages(
+            self,
+            chat: whatsapp_chat,
+            retry: int = 3, *args, **kwargs) \
+            -> List[whatsapp_message]:
+
         wrapped_list: List[whatsapp_message] = []
         try:
-            all_Msgs = await sc.messages(page=self.page)
+            sc = self.UIConfig
+            all_Msgs = await sc.messages()
             count = await all_Msgs.count()
             c = 0
             while c < retry and count == 0:
-                all_Msgs = await sc.messages(page=self.page)
+                all_Msgs = await sc.messages()
                 count = await all_Msgs.count()
                 c += 1
 

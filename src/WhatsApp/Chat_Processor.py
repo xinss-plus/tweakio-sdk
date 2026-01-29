@@ -11,7 +11,7 @@ from playwright.async_api import Page, ElementHandle, Locator
 
 from src.Exceptions import ChatNotFoundError, ChatClickError
 from src.Interfaces.Chat_processor_Interface import chat_processor_interface
-from src.WhatsApp import selector_config as sc
+from src.WhatsApp.WebUISelector import WebSelectorConfig
 from src.WhatsApp.DefinedClasses.Chat import whatsapp_chat
 
 
@@ -21,8 +21,8 @@ class chat_processor(chat_processor_interface):
 
     # Todo About the capabilities adding dynamically via functions and other Loaders providing comparison
 
-    def __init__(self, page: Page, log: logging.Logger) -> None:
-        super().__init__(page=page, log=log)
+    def __init__(self, page: Page, log: logging.Logger, UIConfig : WebSelectorConfig) -> None:
+        super().__init__(page=page, log=log, UIConfig=UIConfig)
         self.capabilities: Dict[str, bool] = {}
 
     async def fetch_chats(self, limit: int = 5, retry: int = 5) -> List[whatsapp_chat]:
@@ -42,12 +42,12 @@ class chat_processor(chat_processor_interface):
     async def _get_Wrapped_Chat(self, limit: int, retry: int) -> List[whatsapp_chat]:
         """List Based Raw data of chats"""
         try:
-            page = self.page
-            chats = sc.chat_items(page)
+            sc = self.UIConfig
+            chats = sc.chat_items()
             wrapped: List[whatsapp_chat] = []
             counter = 0
             while not (await chats.count()) and counter < retry:
-                chats = sc.chat_items(page)
+                chats = sc.chat_items()
                 await  page.wait_for_timeout(1000)
                 counter += 1
 
@@ -109,7 +109,7 @@ class chat_processor(chat_processor_interface):
                 number_span = await unread_Badge.query_selector("span")
                 if number_span:
                     text = (await number_span.inner_text()).strip()
-                    return 1 if text.isdigit() else 0
+                    if text.isdigit(): return 1
             return 0
         except Exception as e:
             self.log.error(f"WA / chat_processor / is_unread Error: {e}", exc_info=True)
