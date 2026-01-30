@@ -10,7 +10,7 @@ from typing import Optional
 from playwright.async_api import ElementHandle
 
 
-class chat_interface(ABC):
+class ChatInterface(ABC):
     """Interface for Chat for every Platform """
 
     chatName: Optional[str]

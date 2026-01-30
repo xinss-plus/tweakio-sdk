@@ -3,8 +3,8 @@ import asyncio
 import sqlite3
 from typing import List, Dict
 
-from src.Interfaces.Message_Interface import message_interface
-from src.Interfaces.Storage_Interface import StorageInterface
+from src.Interfaces.message_interface import MessageInterface
+from src.Interfaces.storage_interface import StorageInterface
 from Custom_logger import logger
 
 
@@ -73,7 +73,7 @@ class SQL_Lite_Storage(StorageInterface):
 
     # ---------- public API ----------
 
-    async def enqueue_insert(self, msgs: List[message_interface]):
+    async def enqueue_insert(self, msgs: List[MessageInterface]):
         if not msgs or self._closed:
             return
         self.start_writer()
@@ -127,7 +127,7 @@ class SQL_Lite_Storage(StorageInterface):
             except Exception as e:
                 logger.error(f"[WriterLoop] {e}", exc_info=True)
 
-    async def _insert_batch_internally(self, msgs: List[message_interface]):
+    async def _insert_batch_internally(self, msgs: List[MessageInterface]):
         if not msgs:
             return
 

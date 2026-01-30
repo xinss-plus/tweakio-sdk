@@ -12,8 +12,8 @@ from playwright.async_api import Locator
 from playwright.async_api import Page
 
 import directory as dirs
-from src.WhatsApp import WebUISelector as sc
-from Errors import NumberNotFound, CountryNotFound, QRNotScanned, PageNotFound
+from src.WhatsApp import web_ui_config as sc
+from DepreciatedFiles__0_1_5_V_of_pypi.Errors import NumberNotFound, CountryNotFound, QRNotScanned, PageNotFound
 from Custom_logger import logger
 
 

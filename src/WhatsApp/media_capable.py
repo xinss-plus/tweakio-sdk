@@ -10,12 +10,12 @@ from typing import Union
 
 from playwright.async_api import Page, ElementHandle, Locator, FileChooser
 
-from src.Interfaces.Media_Capable_Interface import MediaCapableInterface, MediaType, FileTyped
-from src.Interfaces.Message_Interface import message_interface
-from src.Interfaces.Web_UI_Selector import WebUISelectorCapable
+from src.Interfaces.media_capable_interface import MediaCapableInterface, MediaType, FileTyped
+from src.Interfaces.message_interface import MessageInterface
+from src.Interfaces.web_ui_selector import WebUISelectorCapable
 
 
-class Media(MediaCapableInterface):
+class MediaHandle(MediaCapableInterface):
     """WhatsApp media capable Obj Class"""
 
     def __init__(self, page: Page, log: logging.Logger, UIConfig: WebUISelectorCapable) -> None:
@@ -24,8 +24,7 @@ class Media(MediaCapableInterface):
     async def menu_clicker(self):
         """Open WhatsApp menu for File sending selection"""
         try:
-            sc = self.UIConfig
-            menu_icon = await sc.plus_rounded_icon(self.page).element_handle(timeout=1000)
+            menu_icon = await self.UIConfig.plus_rounded_icon(self.page).element_handle(timeout=1000)
 
             if not menu_icon:
                 self.log.error("WA / menu_clicker /Menu Icon not found ", exc_info=True)
@@ -39,7 +38,7 @@ class Media(MediaCapableInterface):
             # Revert back to the condition .
             await self.page.keyboard.press("Escape", delay=0.5)
 
-    async def add_media(self, mtype: MediaType, Message: message_interface, file: FileTyped, **kwargs) -> bool:
+    async def add_media(self, mtype: MediaType, Message: MessageInterface, file: FileTyped, **kwargs) -> bool:
         # Open the Menu
         await self.menu_clicker()
         try:

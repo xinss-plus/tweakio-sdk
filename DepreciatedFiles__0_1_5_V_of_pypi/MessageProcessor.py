@@ -9,10 +9,10 @@ from typing import Union, List, Dict, Tuple, Literal, Optional, Any
 
 from playwright.async_api import Page, Locator, ElementHandle
 
-import Extra as ex
+from DepreciatedFiles__0_1_5_V_of_pypi import Extra as ex
 import directory as dirs
-from src.WhatsApp import WebUISelector as sc
-from Errors import MessageNotFound
+from src.WhatsApp import web_ui_config as sc
+from DepreciatedFiles__0_1_5_V_of_pypi.Errors import MessageNotFound
 from Custom_logger import logger
 from sql_lite_storage import SQL_Lite_Storage
 

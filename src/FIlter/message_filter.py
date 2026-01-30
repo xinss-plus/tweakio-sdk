@@ -7,9 +7,10 @@ from dataclasses import dataclass, field
 from queue import Queue
 from typing import List, Optional
 
-from src.Interfaces.Chat_Interface import chat_interface
-from src.Interfaces.Message_Interface import message_interface
+from src.Interfaces.chat_interface import ChatInterface
+from src.Interfaces.message_interface import MessageInterface
 
+from src.Exceptions.base import MessageFilterError
 
 @dataclass
 class State:
@@ -30,12 +31,12 @@ class State:
 @dataclass
 class BindData:
     """Bind Data for the Queue Filtering"""
-    chat: chat_interface
-    Messages: List[message_interface]
+    chat: ChatInterface
+    Messages: List[MessageInterface]
     seen: float
 
 
-class Filter:
+class MessageFilter:
     """
     Independent, shared Message Filter
     """
@@ -57,24 +58,30 @@ class Filter:
 
     def apply(
             self,
-            messages: List[message_interface],
-    ) -> List[message_interface]:
+            messages: List[MessageInterface],
+    ) -> List[MessageInterface]:
         """
         Applies the filter on any set of Messages.
         Filter is agnostic to message direction or type.
+
+        Raises :
+        - MessageFilterError if not all messages belong to 1 single-same chat
         """
 
         if not messages:
             return []
 
-        # All messages in a batch belong to the same chat
-        chat: chat_interface = messages[0].parent_chat
+        # Check Single-same chat or not in List[messages]
+        if not all(m.parent_chat == messages[0].parent_chat for m in messages):
+            raise MessageFilterError(
+                "MessageFilter.apply expects messages from a single chat"
+            )
 
-        # Interface-defined unique chat identity
+        chat: ChatInterface = messages[0].parent_chat
         chat_key = chat._chat_key()
         now = time.time()
 
-        # Fetch or initialize per-chat state
+        # Fetch/initialize per-chat state
         state = self.StateMap.setdefault(chat_key, State(None, None))
 
         # Reset rate window if expired
@@ -84,12 +91,12 @@ class Filter:
 
         batch_size = len(messages)
 
-        # Hard drop: chat deferred too long
+        # Hard drop: chat delayed > self.LimitTime
         if state.defer_since and (now - state.defer_since) > self.LimitTime:
             state.reset()
             return messages
 
-        # Rate-limit hit → defer entire batch
+        # Rate-limit hit → delay entire batch
         if state.count + batch_size > self.Max_Messages_Per_Window:
             state.defer_since = state.defer_since or now
             self.Defer_queue.put(BindData(chat, messages, now))

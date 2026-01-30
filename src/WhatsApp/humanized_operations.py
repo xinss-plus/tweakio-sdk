@@ -8,11 +8,11 @@ from typing import Union, Optional
 import pyperclip
 from playwright.async_api import Page, ElementHandle, Locator
 
-from src.Interfaces.Humanize_Operation_Interface import humanize_operation
-from src.Interfaces.Web_UI_Selector import WebUISelectorCapable
+from src.Interfaces.humanize_operation_interface import HumanizeOperation
+from src.Interfaces.web_ui_selector import WebUISelectorCapable
 
 
-class Humanized_Operation(humanize_operation):
+class HumanizedOperations(HumanizeOperation):
     """WhatsApp  Customized Humanized Operation"""
 
     def __init__(self, page: Page, log: logging.Logger, UIConfig : WebUISelectorCapable):

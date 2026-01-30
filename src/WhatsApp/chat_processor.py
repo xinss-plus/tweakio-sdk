@@ -10,13 +10,13 @@ from typing import Dict, List, Optional
 from playwright.async_api import Page, ElementHandle, Locator
 
 from src.Exceptions import ChatNotFoundError, ChatClickError
-from src.Interfaces.Chat_processor_Interface import chat_processor_interface
+from src.Interfaces.chatprocessorinterface import ChatProcessorInterface
 from src.WhatsApp.WebUISelector import WebSelectorConfig
 from src.WhatsApp.DefinedClasses.Chat import whatsapp_chat
 
 
 # Todo , add the paths for chatLoaderInterface , ChatInterface
-class chat_processor(chat_processor_interface):
+class ChatProcessor(ChatProcessorInterface):
     """WhatsApp's Custom Chat processor """
 
     # Todo About the capabilities adding dynamically via functions and other Loaders providing comparison

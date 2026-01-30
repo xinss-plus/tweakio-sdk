@@ -8,7 +8,7 @@ from ChatInterface import ChatInterface
 from playwright.async_api import ElementHandle, Locator
 
 
-class message_interface(ABC):
+class MessageInterface(ABC):
     """Message Interface"""
 
     System_Hit_Time: float

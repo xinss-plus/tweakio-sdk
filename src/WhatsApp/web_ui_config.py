@@ -11,7 +11,7 @@ from typing import Union, Optional
 
 from playwright.async_api import ElementHandle, Locator, Page
 
-from src.Interfaces.Web_UI_Selector import WebUISelectorCapable
+from src.Interfaces.web_ui_selector import WebUISelectorCapable
 
 
 class WebSelectorConfig(WebUISelectorCapable):

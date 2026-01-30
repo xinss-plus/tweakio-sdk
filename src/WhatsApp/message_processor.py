@@ -12,21 +12,21 @@ from playwright.async_api import Page
 
 from sql_lite_storage import SQL_Lite_Storage
 from src.Decorators.Chat_Click_decorator import ensure_chat_clicked
-from src.Interfaces.Message_Processor_Interface import message_processor_interface
+from src.Interfaces.messageprocessorinterface import MessageProcessorInterface
 from src.MessageFilter import Filter
-from src.WhatsApp.Chat_Processor import chat_processor
+from src.WhatsApp.ChatProcessor import ChatProcessor
 from src.WhatsApp.DefinedClasses.Chat import whatsapp_chat
 from src.WhatsApp.DefinedClasses.Message import whatsapp_message
 from src.WhatsApp.WebUISelector import WebSelectorConfig
 
 
-class MessageProcessor(message_processor_interface):
+class MessageProcessor(MessageProcessorInterface):
 
     def __init__(
             self,
             storage_obj: Optional[SQL_Lite_Storage],
             filter_obj: Optional[Filter],
-            chat_processor: chat_processor,
+            chat_processor: ChatProcessor,
             page: Page,
             log: logging.Logger,
             UIConfig: WebSelectorConfig
@@ -50,7 +50,7 @@ class MessageProcessor(message_processor_interface):
             return [msg for msg in msgList if msg.Direction == "in"]
         return [msg for msg in msgList if msg.Direction == "out"]
 
-    @ensure_chat_clicked(lambda self, chat: self.chat_processor._click_chat(chat))
+    @ensure_chat_clicked(lambda self, chat: self.ChatProcessor._click_chat(chat))
     async def _get_wrapped_Messages(
             self,
             chat: whatsapp_chat,

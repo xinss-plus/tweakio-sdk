@@ -3,10 +3,9 @@ from typing import Union
 
 from playwright.async_api import Page, ElementHandle, Locator, Position
 
-import _Humanize as ha
-import _Media as med
+from DepreciatedFiles__0_1_5_V_of_pypi import _Humanize as ha, _Media as med
 from Custom_logger import logger
-from src.WhatsApp import WebUISelector as sc
+from src.WhatsApp import web_ui_config as sc
 
 
 async def double_edge_click(page: Page, message: Union[ElementHandle, Locator]) -> bool:

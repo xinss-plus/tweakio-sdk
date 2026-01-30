@@ -60,3 +60,13 @@ class AuthenticationError(TweakioError):
 class QRNotScannedError(AuthenticationError):
     """Raised when QR code is not scanned within timeout"""
     pass
+
+# Filtering Errors
+class MessageFilterError(TweakioError):
+    """Base exception for message-related errors"""
+    pass
+
+# ReplyCapable Error
+class ReplyCapableError(TweakioError):
+    """Base exception for reply-related errors"""
+    pass

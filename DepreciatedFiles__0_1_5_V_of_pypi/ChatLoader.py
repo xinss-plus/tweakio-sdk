@@ -9,7 +9,7 @@ from typing import Union, Optional, List
 
 from playwright.async_api import Page, Locator, ElementHandle
 
-from src.WhatsApp import WebUISelector as sc
+from src.WhatsApp import web_ui_config as sc
 from Errors import ChatsNotFound
 from Custom_logger import logger
 
