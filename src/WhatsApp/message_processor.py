@@ -6,15 +6,15 @@ It will have in Extra as incoming and outgoing Message filters ,
 from __future__ import annotations
 
 import logging
-from typing import List, Optional
+from typing import List, Optional, Sequence
 
 from playwright.async_api import Page
 
-from DepreciatedFiles__0_1_5_V_of_pypi.sql_lite_storage import SQL_Lite_Storage
 from src.Decorators.Chat_Click_decorator import ensure_chat_clicked
 from src.Exceptions.whatsapp import MessageNotFoundError, WhatsAppError, MessageProcessorError, MessageListEmptyError
 from src.FIlter.message_filter import MessageFilter
 from src.Interfaces.message_processor_interface import MessageProcessorInterface
+from src.Interfaces.storage_interface import StorageInterface
 from src.WhatsApp.DerivedTypes.Chat import whatsapp_chat
 from src.WhatsApp.DerivedTypes.Message import whatsapp_message
 from src.WhatsApp.chat_processor import ChatProcessor
@@ -25,7 +25,7 @@ class MessageProcessor(MessageProcessorInterface):
 
     def __init__(
             self,
-            storage_obj: Optional[SQL_Lite_Storage],
+            storage_obj: Optional[StorageInterface],
             filter_obj: Optional[MessageFilter],
             chat_processor: ChatProcessor,
             page: Page,
@@ -39,10 +39,14 @@ class MessageProcessor(MessageProcessorInterface):
             page=page,
             UIConfig=UIConfig)
         self.chat_processor = chat_processor
+        if self.page is None:
+            raise ValueError("page must not be None")
 
     @staticmethod
-    async def sort_messages(msgList: List[whatsapp_message], incoming: bool) -> List[whatsapp_message]:
+    async def sort_messages(msgList: Sequence[whatsapp_message], incoming: bool) -> List[whatsapp_message]:
         """
+        params :
+        msgList: Iterable list of WhatsApp messages.
         Returns incoming messages sorted by direction.
         incoming : if true gives incoming messages , else false gives outgoing messages.
         """

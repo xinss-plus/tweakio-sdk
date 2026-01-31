@@ -19,6 +19,8 @@ class WebSelectorConfig(WebUISelectorCapable):
 
     def __init__(self, page: Page) -> None:
         super().__init__(page=page)
+        if self.page is None:
+            raise ValueError("page must not be None")
 
     # Todo , Adding all the new Functions from Child to here.
     def chat_list(self) -> Locator:

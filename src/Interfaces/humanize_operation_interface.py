@@ -18,6 +18,4 @@ class HumanizeOperation(ABC):
         self.UIConfig = UIConfig
 
     @abstractmethod
-    async def typing(self, text: str, **kwargs) -> None:
-        """This operation ensures the given text is typed on the Web UI with humanized Typing"""
-        pass
+    async def typing(self, text: str, **kwargs) -> None: ...

@@ -17,6 +17,4 @@ class MessageInterface(Protocol):
     message_id: Optional[str]
 
 
-def _message_key() -> str:
-    """Returns the Hashed UI"""
-    pass
+def _message_key() -> str: ...

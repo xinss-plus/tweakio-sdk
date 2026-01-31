@@ -38,9 +38,4 @@ class MediaCapableInterface(ABC):
         self.UIConfig = UIConfig
 
     @abstractmethod
-    async def add_media(self, mtype: MediaType, file: FileTyped, **kwargs) -> bool:
-        """
-        Attach Media given with the Type to attach to the message.
-        Returns True if the media was successfully added else False.
-        """
-        pass
+    async def add_media(self, mtype: MediaType, file: FileTyped, **kwargs) -> bool: ...

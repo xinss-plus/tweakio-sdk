@@ -16,6 +16,4 @@ class ChatInterface(Protocol):
     chat_ui: Optional[Union[Locator, ElementHandle]]
     System_Hit_Time: float
 
-    def _chat_key(self, **kwargs) -> str:
-        """Returns the Hashed UI"""
-        pass
+    def _chat_key(self, **kwargs) -> str: ...

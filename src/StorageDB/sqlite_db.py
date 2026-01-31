@@ -2,4 +2,6 @@
 Generic Implementation for all platforms to use SQ LITE DB.
 """
 
-# Will be added Later from sql_lite_storage.py with Interface Bounded.
+from src.Interfaces.storage_interface import StorageInterface
+class SQLITE_DB(StorageInterface):
+    pass

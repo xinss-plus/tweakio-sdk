@@ -18,23 +18,18 @@ from src.WhatsApp.web_ui_config import WebSelectorConfig
 
 
 class ChatProcessorInterface(ABC):
-    """Chat Loader Interface"""
     capabilities: Dict[str, bool]
 
-    def __init__(self, log: logging.Logger, page : Page, UIConfig : WebSelectorConfig, **kwargs) -> None:
+    def __init__(self, log: logging.Logger, page: Page, UIConfig: WebSelectorConfig, **kwargs) -> None:
         self.log = log
         self.page = page
         self.UIConfig = UIConfig
 
     @abstractmethod
-    async def fetch_chats(self, **kwargs) -> List[ChatInterface]:
-        """Fetch and return limited chat objects"""
-        pass
+    async def fetch_chats(self, **kwargs) -> List[ChatInterface]: ...
 
     @abstractmethod
-    async def _click_chat(self, chat: Optional[ChatInterface], **kwargs) -> bool:
-        """Click chat object"""
-        pass
+    async def _click_chat(self, chat: Optional[ChatInterface], **kwargs) -> bool: ...
 
     @abstractmethod
-    async def _get_Wrapped_Chat(self, **kwargs) -> List[ChatInterface]: pass
+    async def _get_Wrapped_Chat(self, **kwargs) -> List[ChatInterface]: ...

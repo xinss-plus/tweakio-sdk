@@ -26,6 +26,8 @@ class ChatProcessor(ChatProcessorInterface):
     def __init__(self, page: Page, log: logging.Logger, UIConfig: WebSelectorConfig) -> None:
         super().__init__(page=page, log=log, UIConfig=UIConfig)
         self.capabilities: Dict[str, bool] = {}
+        if self.page is None:
+            raise ValueError("page must not be None")
 
     async def fetch_chats(self, limit: int = 5, retry: int = 5) -> List[whatsapp_chat]:
         """Fetching chats in the loaded JS UI of web page of WhatsApp"""

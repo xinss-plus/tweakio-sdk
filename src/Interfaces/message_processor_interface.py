@@ -7,10 +7,10 @@ from typing import List, Optional
 
 from playwright.async_api import Page
 
-from src.Interfaces.chat_interface import ChatInterface
-from src.FIlter.message_filter import MessageFilter
+from src.Interfaces.storage_interface import StorageInterface
 from message_interface import MessageInterface
-from DepreciatedFiles__0_1_5_V_of_pypi.sql_lite_storage import SQL_Lite_Storage
+from src.FIlter.message_filter import MessageFilter
+from src.Interfaces.chat_interface import ChatInterface
 from src.WhatsApp.web_ui_config import WebSelectorConfig
 
 
@@ -21,10 +21,10 @@ class MessageProcessorInterface(ABC):
 
     def __init__(
             self,
-            log : logging.Logger,
-            page : Page,
+            log: logging.Logger,
+            page: Page,
             UIConfig: WebSelectorConfig,
-            storage_obj: Optional[SQL_Lite_Storage] = None,
+            storage_obj: Optional[StorageInterface] = None,
             filter_obj: Optional[MessageFilter] = None
     ) -> None:
         self.storage = storage_obj
@@ -34,12 +34,7 @@ class MessageProcessorInterface(ABC):
         self.UIConfig = UIConfig
 
     @abstractmethod
-    async def _get_wrapped_Messages(self, retry: int, *args, **kwargs) -> List[MessageInterface]: pass
+    async def _get_wrapped_Messages(self, retry: int, *args, **kwargs) -> List[MessageInterface]: ...
 
     @abstractmethod
-    async def Fetcher(self, chat: ChatInterface, retry: int, *args, **kwargs) -> List[MessageInterface]:
-        """
-        Returns the List of Total messages in that open Chat/Contact.
-        Flexibility with batch processing & Safer Filtering approaches.
-        """
-        pass
+    async def Fetcher(self, chat: ChatInterface, retry: int, *args, **kwargs) -> List[MessageInterface]: ...

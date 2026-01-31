@@ -19,6 +19,8 @@ from src.WhatsApp.DerivedTypes.Message import whatsapp_message
 class ReplyCapable(ReplyCapableInterface):
     def __init__(self, page: Page, log: logging.Logger, UIConfig: WebUISelectorCapable):
         super().__init__(page=page, log=log, UIConfig=UIConfig)
+        if self.page is None:
+            raise ValueError("page must not be None")
 
     async def reply(
             self,

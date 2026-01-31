@@ -14,12 +14,16 @@ from src.Interfaces.web_ui_selector import WebUISelectorCapable
 class ReplyCapableInterface(ABC):
     """AAbstract class to represent ReplyCapable interface"""
 
-    def __init__(self, page: Page, log: logging.Logger, UIConfig :WebUISelectorCapable ,  **kwargs) -> None:
+    def __init__(self, page: Page, log: logging.Logger, UIConfig: WebUISelectorCapable, **kwargs) -> None:
         self.page = page
         self.log = log
         self.UIConfig = UIConfig
 
     @abstractmethod
-    async def reply(self, Message: MessageInterface, humanize: HumanizeOperation, text: Optional[str], **kwargs) -> bool:
-        """Reply  to the message and returns True on success else False"""
-        pass
+    async def reply(
+            self,
+            Message: MessageInterface,
+            humanize: HumanizeOperation,
+            text: Optional[str],
+            **kwargs
+    ) -> bool: ...

@@ -6,7 +6,6 @@ import asyncio
 import logging
 import random
 from pathlib import Path
-
 from playwright.async_api import Page, Locator, FileChooser, TimeoutError as PlaywrightTimeoutError
 
 from src.Exceptions.whatsapp import MenuError, MediaCapableError, WhatsAppError
@@ -19,6 +18,8 @@ class MediaCapable(MediaCapableInterface):
 
     def __init__(self, page: Page, log: logging.Logger, UIConfig: WebUISelectorCapable) -> None:
         super().__init__(page=page, log=log, UIConfig=UIConfig)
+        if self.page is None:
+            raise ValueError("page must not be None")
 
     async def menu_clicker(self) -> None:
         """Open WhatsApp menu for File sending selection"""
