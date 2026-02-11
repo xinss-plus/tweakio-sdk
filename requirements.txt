@@ -21,7 +21,7 @@ confuse==2.0.1
 cryptography==46.0.5
 dateparser==1.2.2
 deepdiff==8.6.1
-dill==0.4.0
+dill==0.4.1
 drf-spectacular==0.28.0
 face==24.0.0
 filetype==1.2.0
