@@ -35,3 +35,12 @@ print("Activating test2...")
 pm.activate_profile("whatsapp", "test2")
 
 print("Done.")
+
+print("Creating backup...")
+pm.create_backup("whatsapp", "test2")
+
+print("Deleting test1...")
+pm.delete_profile("whatsapp", "test1")
+
+print("Profiles after deletion:", pm.list_profiles("whatsapp"))
+

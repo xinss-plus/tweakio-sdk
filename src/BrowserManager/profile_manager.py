@@ -135,6 +135,9 @@ class ProfileManager:
         with open(metadata_file, "r") as f:
             metadata = json.load(f)
 
+        if not metadata.get("paths"):
+            raise ValueError("Corrupted metadata file.")
+        
         if metadata["status"]["is_active"]:
             return
 
@@ -154,3 +157,57 @@ class ProfileManager:
         lock_file.write_text(str(os.getpid()))
         
 
+    def delete_profile(self, platform: str, profile_id: str, force: bool = False) -> None:
+        profile_dir = self._get_profile_dir(platform, profile_id)
+
+        if not profile_dir.exists():
+            raise ValueError(f"Profile '{profile_id}' does not exist for platform '{platform}'")
+
+        metadata_file = profile_dir / "metadata.json"
+
+        with open(metadata_file, "r") as f:
+            metadata = json.load(f)
+
+        # Block deletion if active
+        if metadata["status"]["is_active"] and not force:
+            raise ValueError(
+                f"Cannot delete active profile '{profile_id}'. Deactivate first or use force=True."
+            )
+
+        # Remove directory safely
+        shutil.rmtree(profile_dir)
+    def create_backup(self, platform: str, profile_id: str) -> None:
+        profile_dir = self._get_profile_dir(platform, profile_id)
+
+        if not profile_dir.exists():
+            raise ValueError("Profile does not exist.")
+
+        metadata_file = profile_dir / "metadata.json"
+
+        with open(metadata_file, "r") as f:
+            metadata = json.load(f)
+
+        if not metadata["backup"]["enabled"]:
+            return
+
+        backup_dir = profile_dir / "backups"
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        backup_file = backup_dir / f"session_{timestamp}.json"
+
+        session_file = profile_dir / "session.json"
+
+        shutil.copy2(session_file, backup_file)
+
+        self._prune_backups(profile_dir, metadata["backup"]["max_backups"])
+    def _prune_backups(self, profile_dir: Path, max_backups: int) -> None:
+        backup_dir = profile_dir / "backups"
+
+        backups = sorted(
+            backup_dir.glob("session_*.json"),
+            key=lambda x: x.stat().st_mtime,
+            reverse=True
+        )
+
+        for old_backup in backups[max_backups:]:
+            old_backup.unlink()
