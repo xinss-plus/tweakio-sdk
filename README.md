@@ -1,3 +1,5 @@
+![Project Banner](assets/OSCG_Banner.jpeg)
+
 # Tweakio-SDK
 
 > **Production-Grade WhatsApp Web Automation for Python**  
