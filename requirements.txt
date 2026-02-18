@@ -63,7 +63,7 @@ py7zr==1.0.0
 pyasn1==0.6.2
 pyasn1_modules==0.4.2
 pybcj==1.0.7
-pycountry==24.6.1
+pycountry==26.2.16
 pycparser==2.23
 pycryptodomex==3.23.0
 pyee==13.0.0
